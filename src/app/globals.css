@@ -1,0 +1,206 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Original design colors: soft white + violet (light, default) and charcoal + violet (dark).
+   Dark applies when <html data-theme="dark"> (set before first paint and
+   remembered in localStorage). Components only use the semantic tokens below.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* Original design: soft white surfaces, violet accent */
+  --background: #f8f8fc;
+  --sidebar: #fbfbfe;
+  --surface: #ffffff;
+  --input: #ffffff;
+  --selected: #eeebfd;          /* selected navigation / hover fill */
+  --accent: #8b7cf6;
+  --accent-strong: #6f5fe6;     /* filled buttons */
+  --foreground: #1f1b2e;
+  --muted: #6b6880;
+  --border: #e6e5f0;
+  --highlight: #f5a524;         /* favorite star */
+
+  --accent-soft: var(--selected);
+  --on-accent: #ffffff;
+  --link: #5a49d4;
+  --focus: #6f5fe6;
+  --nav-active-bg: #eeebfd;
+  --nav-active-text: #5a49d4;
+
+  --ok: #2b7d58;   --ok-soft: #e0f4ea;
+  --danger: #d03b44; --danger-soft: #fde8ea;
+  --warn: #9a6200; --warn-soft: #fff1d6;
+
+  /* category chips: soft pastel fills, colored text */
+  --cat-1-bg: #e4ecff; --cat-1-fg: #2f55c4;  /* blue */
+  --cat-2-bg: #fce6f2; --cat-2-fg: #b0287a;  /* pink */
+  --cat-3-bg: #dcf3ef; --cat-3-fg: #14756a;  /* teal */
+  --cat-4-bg: #fff0d2; --cat-4-fg: #98600a;  /* amber */
+  --cat-5-bg: #e0f4e4; --cat-5-fg: #29783b;  /* green */
+  --cat-6-bg: #ffe8da; --cat-6-fg: #b04c12;  /* orange */
+  --cat-7-bg: #ebe7fd; --cat-7-fg: #5546c8;  /* violet */
+  --cat-8-bg: #ececf3; --cat-8-fg: #565468;  /* grey */
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Neutral charcoal with the same violet accent */
+  --background: #16161a;
+  --sidebar: #1b1b20;
+  --surface: #202027;
+  --input: #27272f;
+  --selected: #2d2a4a;
+  --accent: #8b7cf6;
+  --accent-strong: #7467ee;
+  --foreground: #ededf3;
+  --muted: #a4a4b6;
+  --border: #2e2e39;
+  --highlight: #f5b945;
+
+  --accent-soft: var(--selected);
+  --on-accent: #ffffff;
+  --link: #b3a9ff;
+  --focus: #b3a9ff;
+  --nav-active-bg: #2d2a4a;
+  --nav-active-text: #d6d0ff;
+
+  --ok: #7fd0a4;   --ok-soft: #1d3026;
+  --danger: #f58a91; --danger-soft: #3b2226;
+  --warn: #f0be62; --warn-soft: #3a2f18;
+
+  --cat-1-bg: #24305a; --cat-1-fg: #a9c0ff;
+  --cat-2-bg: #4a2540; --cat-2-fg: #f5a9d6;
+  --cat-3-bg: #1c3b38; --cat-3-fg: #8ee0d3;
+  --cat-4-bg: #45341a; --cat-4-fg: #f2c777;
+  --cat-5-bg: #1f3a28; --cat-5-fg: #96dba5;
+  --cat-6-bg: #46301f; --cat-6-fg: #f5b48a;
+  --cat-7-bg: #342e5c; --cat-7-fg: #c4bcff;
+  --cat-8-bg: #2c2c35; --cat-8-fg: #c4c4d2;
+}
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-sidebar: var(--sidebar);
+  --color-surface: var(--surface);
+  --color-input: var(--input);
+  --color-surface-2: var(--surface-2);
+  --color-selected: var(--selected);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-highlight: var(--highlight);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-link: var(--link);
+  --color-focus: var(--focus);
+  --color-on-accent: var(--on-accent);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ------------------------------------------------------------ base elements */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+::selection { background: color-mix(in srgb, var(--accent) 38%, transparent); }
+::placeholder { color: var(--muted); opacity: 0.8; }
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+aside { background: var(--sidebar); }
+
+/* inputs, search fields, textareas and selects use the dedicated input background */
+input.bg-surface, textarea.bg-surface, select.bg-surface,
+input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), textarea, select {
+  background-color: var(--input);
+}
+input.bg-surface:hover, textarea.bg-surface:hover { border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); }
+input.bg-surface:focus, textarea.bg-surface:focus { border-color: var(--accent); }
+
+select, option { background: var(--surface); color: var(--foreground); }
+dialog {
+  background: var(--surface); color: var(--foreground);
+  border: 1px solid var(--border); border-radius: 1rem;
+}
+dialog::backdrop { background: color-mix(in srgb, var(--background) 72%, transparent); }
+table { border-collapse: collapse; color: var(--foreground); }
+th { color: var(--muted); font-weight: 500; text-align: left; }
+th, td { border-bottom: 1px solid var(--border); padding: 0.5rem 0.75rem; }
+tbody tr:hover { background: var(--selected); }
+hr { border-color: var(--border); }
+* { scrollbar-color: var(--border) transparent; }
+
+input:-webkit-autofill,
+textarea:-webkit-autofill {
+  -webkit-text-fill-color: var(--foreground);
+  box-shadow: 0 0 0 1000px var(--surface) inset;
+}
+
+/* ------------------------------------------------------------------ buttons
+   Primary buttons (Add Word, Save, Import) are solid violet with white text, as in the
+   original design. Secondary buttons and clickable cards are surface-colored with a
+   border and a light violet hover. */
+button, a {
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease, filter .15s ease;
+}
+
+.bg-accent-strong {
+  background-color: var(--accent-strong);
+  border: 1px solid var(--accent-strong);
+  color: var(--on-accent);
+}
+.bg-accent-strong:hover { filter: brightness(1.08); }
+
+button.bg-surface, a.bg-surface { border-color: var(--border); }
+button.bg-surface:hover, a.bg-surface:hover {
+  background-color: var(--selected);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+}
+
+button:disabled, button[aria-disabled="true"] { cursor: not-allowed; }
+button.bg-accent-strong:disabled { opacity: 0.5; filter: none; }
+button.bg-surface:disabled { opacity: 0.55; }
+
+/* ----------------------------------------------------------- navigation */
+a[aria-current="page"] {
+  background-color: var(--nav-active-bg);
+  color: var(--nav-active-text);
+}
+a[aria-current="page"] svg { color: var(--accent-strong); }
+
+/* icons that sit next to accent text inherit the accent */
+svg.text-link { color: var(--accent-strong); }
+
+/* favorites star */
+.fill-accent { fill: var(--highlight); color: var(--highlight); }
+
+/* category chip colors: add class "cat-1" … "cat-8" to a chip */
+.cat-1 { background: var(--cat-1-bg); color: var(--cat-1-fg); }
+.cat-2 { background: var(--cat-2-bg); color: var(--cat-2-fg); }
+.cat-3 { background: var(--cat-3-bg); color: var(--cat-3-fg); }
+.cat-4 { background: var(--cat-4-bg); color: var(--cat-4-fg); }
+.cat-5 { background: var(--cat-5-bg); color: var(--cat-5-fg); }
+.cat-6 { background: var(--cat-6-bg); color: var(--cat-6-fg); }
+.cat-7 { background: var(--cat-7-bg); color: var(--cat-7-fg); }
+.cat-8 { background: var(--cat-8-bg); color: var(--cat-8-fg); }
+
+/* compatibility with components from earlier versions */
+.text-white { color: var(--on-accent); }
+.text-accent-strong, .hover\:text-accent-strong:hover { color: var(--link); }
